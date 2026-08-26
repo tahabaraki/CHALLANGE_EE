@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Knockout Challenge</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <section id="accessScreen" class="screen active">
+    <div class="glow"></div>
+    <div class="brand">⚔ KNOCKOUT</div>
+    <h1>PRIVATE<br><span>CHALLENGE</span></h1>
+    <div class="accessBox">
+      <input id="accessCode" type="password" inputmode="text" autocomplete="off" placeholder="ACCESS CODE">
+      <button id="accessBtn" class="primary">ENTER <span>→</span></button>
+      <div id="accessError" class="accessError"></div>
+    </div>
+  </section>
+
+  <section id="startScreen" class="screen">
+    <div class="glow"></div>
+    <div class="brand">⚔ KNOCKOUT</div>
+    <h1>POPULARITY<br><span>CHALLENGE</span></h1>
+    <p class="subtitle">هر بار قرعه‌کشی متفاوت، یک قهرمان.</p>
+    <div class="stat"><b id="participantCount">0</b><span>شرکت‌کننده</span></div>
+    <button id="startBtn" class="primary">START <span>→</span></button>
+  </section>
+
+  <section id="matchScreen" class="screen">
+    <header class="topbar">
+      <div class="brand small">⚔ KNOCKOUT</div>
+      <div class="roundInfo"><b id="roundName">ROUND 1</b><span id="matchInfo">MATCH 01</span></div>
+      <div class="progressWrap"><div id="progressBar"></div></div>
+    </header>
+    <main class="matchMain">
+      <div class="eyebrow" id="stageLabel">ROUND 1</div>
+      <h2>کدام را انتخاب می‌کنی؟</h2>
+      <div class="versus">
+        <button class="playerCard" id="cardA">
+          <span class="number">01</span><span class="playerName" id="nameA"></span><span class="select">SELECT</span>
+        </button>
+        <div class="vs">VS</div>
+        <button class="playerCard" id="cardB">
+          <span class="number">02</span><span class="playerName" id="nameB"></span><span class="select">SELECT</span>
+        </button>
+      </div>
+      <div class="hint">برای ادامه یکی از دو نفر را انتخاب کن</div>
+    </main>
+  </section>
+
+  <section id="winnerScreen" class="screen">
+    <div class="winnerGlow"></div>
+    <div class="trophy">🏆</div>
+    <div class="eyebrow">TOURNAMENT COMPLETE</div>
+    <h2>قهرمان نهایی</h2>
+    <div id="championName" class="champion"></div>
+    <div class="actions">
+      <button id="bracketBtn" class="primary">VIEW BRACKET</button>
+      <button id="restartBtn" class="secondary">PLAY AGAIN</button>
+    </div>
+  </section>
+
+  <section id="bracketScreen" class="screen">
+    <header class="topbar bracketTop">
+      <div class="brand small">⚔ KNOCKOUT</div>
+      <div class="championMini">🏆 <span id="miniChampion"></span></div>
+      <button id="backBtn" class="secondary smallBtn">← BACK</button>
+    </header>
+    <div id="bracket" class="bracket"></div>
+  </section>
+</div>
+<script>
+const NAMES = ['ابوالفضل عباس خواه', 'ابوالفضل کوانگری', 'ابوالفضل نعیمی', 'احمدرضا عافی', 'ارغوان محمودشریعتی', 'ارمین ردادی', 'اروین عابدی', 'ارین رمضانی فر', 'امیرحسین باغیشنی', 'امیرحسین رنجبرتقی اباد', 'امیرحسین سلاجقه', 'امیرحسین کریمی فرد', 'امیرحسین مصلحت', 'امیرسعید پاشائی', 'امیرعلی اولیائی مهر', 'امیرمحمد اخلاقی', 'امیرمحمد جعفری', 'امیرمحمد کریمی فرد', 'اناهیتا روحی', 'ایلیا قادری', 'بردیا بابائی', 'بردیا بختیاری', 'پارسا بیشه', 'حسین زارعی', 'دانیال مهرانی خانقاه', 'دنیا یاهوئی', 'دیبا محسنی', 'زهرا حیدری', 'سارینا خواجوی', 'سبحان درویشی', 'سجاد بهارلوئی', 'سجاد سلیمی', 'سجاد هنرکاررمضانی', 'سعید قاسمی', 'سهیل کریمی', 'سیدمحمدامین میرکاظمی مقدم', 'سیدمحمدمیلاد امینی', 'شانلی سمیع نژاد', 'شایان فرزانه', 'شیما محققی', 'عارف کیمیایی', 'عرفان اشکش', 'عطا محمدیان', 'علی ابراهیمی', 'علیرضا اصلانی منش', 'علیرضا حسینیان ابرقوئی', 'علیرضا قاسمی', 'فاطمه رضوانی زاده', 'فاطمه شریفی راینی', 'حلما شرفی', 'فاطمه کزازی', 'فاطمه مقیسه', 'فربد فرمهینی فراهانی', 'فریناز عبدالحکیمی', 'کیارش ارجمندکرمانی', 'کیانا شریف زاده اکباتانی', 'کیمیا خودسیانی', 'مارال ترابی مهرام', 'مانا لطفی', 'مانی محمدی', 'مبینا پیمانی فروشانی', 'مبینا ترومیده', 'مبینا جعفری', 'محمد گلشن نیر', 'محمدامین منجم', 'محمدرضا باقری خاجانی', 'محمدصادق برومندی پولی', 'محمدصالح ترودی', 'محمدطه برکی', 'محمدمتین فیض', 'محمدمهدی عزیزی', 'محمدمهدی فتحی', 'محمدیاسین قاسمی', 'معین مهدی زاده کاخکی', 'ملیکا محبی', 'ملینا مرندی', 'مهبد بمانی چم', 'مهدی سلیمانی ساردو', 'مهدی صالحی', 'مهرسا احمدی', 'مهنا هاشمی', 'مهیار میردارسلطانی', 'نادیا غلامی', 'نازنین زهرا تقی زاده صدقیانی', 'نرجس حیدری', 'نگار رضائی', 'نیلوفر صادقی ولنی', 'هستی دلفان بیرانوند', 'هلیا بیات اورزمانی', 'یسنا اسیابان لاله', 'ملیکا بهبود'];
+</script>
+<script src="app.js"></script>
+</body>
+</html>
