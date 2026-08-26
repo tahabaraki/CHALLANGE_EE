@@ -17,3 +17,105 @@ h1{font-size:clamp(48px,9vw,92px);line-height:.98;margin:22px 0 15px;font-weight
 .accessBox input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(124,255,0,.08)}
 .accessBox .primary{height:54px}
 .accessError{min-height:20px;color:#ff6b6b;font-size:12px;font-weight:700}
+
+/* --- Bracket improvements --- */
+#bracketScreen{overflow:hidden}
+.bracketTop{position:sticky;top:0;z-index:20}
+.bracket{
+  position:relative;
+  flex:1;
+  min-height:0;
+  width:100%;
+  padding:34px 48px 60px;
+  gap:clamp(28px,4vw,64px);
+  overflow:auto;
+  align-items:stretch;
+  justify-content:center;
+  scrollbar-gutter:stable both-edges;
+  overscroll-behavior:contain;
+}
+.bracket.isScrollable{justify-content:flex-start}
+.bracketRound{
+  position:relative;
+  flex:0 0 clamp(155px,16vw,210px);
+  min-width:clamp(155px,16vw,210px);
+  min-height:100%;
+}
+.roundTitle{
+  position:sticky;
+  top:0;
+  z-index:4;
+  margin-bottom:18px;
+  padding:7px 8px;
+  background:rgba(7,11,8,.92);
+  backdrop-filter:blur(8px);
+  border-radius:8px;
+}
+.roundMatches{
+  height:calc(100% - 42px);
+  min-height:420px;
+  justify-content:space-around;
+  gap:clamp(10px,1.4vw,22px);
+}
+.matchBox{
+  position:relative;
+  flex:0 0 auto;
+  min-height:74px;
+  border-radius:10px;
+  z-index:2;
+}
+.bracketPlayer{
+  min-height:37px;
+  padding:8px 10px;
+  font-size:clamp(10px,1vw,12px);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.bracketPlayer.bye{
+  color:#68716a;
+  font-style:italic;
+  text-decoration:none;
+}
+.bracketConnections{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:visible;
+  z-index:1;
+}
+.bracketConnections path{
+  fill:none;
+  stroke:#36552d;
+  stroke-width:1.5;
+  vector-effect:non-scaling-stroke;
+  opacity:.9;
+}
+.bracketConnections circle{
+  fill:#7cff00;
+  opacity:.85;
+}
+@media(max-width:900px){
+  .bracket{padding:25px 22px 45px;gap:28px}
+  .bracketRound{flex-basis:170px;min-width:170px}
+  .roundMatches{min-height:360px}
+}
+@media(max-width:700px){
+  #bracketScreen{overflow:hidden}
+  .championMini{max-width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bracket{padding:22px 16px 40px;gap:22px}
+  .bracketRound{flex-basis:150px;min-width:150px}
+  .roundTitle{font-size:10px}
+  .matchBox{min-height:68px}
+  .bracketPlayer{min-height:34px;font-size:9px;padding:7px 8px}
+}
+/* Make the match screen comfortably fit without unnecessary page scrolling. */
+#matchScreen{overflow:hidden}
+.matchMain{padding:28px 0 44px}
+@media(max-height:700px) and (min-width:701px){
+  .matchMain{transform:scale(.88);transform-origin:center center}
+  .playerCard{min-height:235px}
+  .matchMain h2{margin-bottom:24px}
+}
